@@ -138,7 +138,7 @@ Page {
             }
 
             SectionHeader {
-                // Privacy settings SectionHeader
+                //: Privacy settings SectionHeader
                 //% "Privacy"
                 text: qsTrId("settings_browser-bt-privacy")
             }
