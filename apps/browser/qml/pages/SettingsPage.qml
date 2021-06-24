@@ -162,6 +162,24 @@ Page {
             }
 
             TextSwitch {
+                id: doNotTrack
+
+                checked: doNotTrackConfig.value
+
+                //: Tell sites that I do not want to be tracked.
+                //% "Do not track"
+                text: qsTrId("settings_browser-la-tracking")
+                //: Tell sites that I do not want to be tracked.
+                //% "Tell sites that I do not want to be tracked"
+                description: qsTrId("settings_browser-la-tracking_description")
+                // Margins adjusted to align with other items on the page
+                leftMargin: Theme.horizontalPageMargin + Theme.paddingLarge + _textSwitchIconCenter
+                _label.anchors.leftMargin: Theme.paddingMedium + _textSwitchIconCenter
+
+                onCheckedChanged: doNotTrackConfig.value = checked
+            }
+
+            TextSwitch {
                 //: Label for text switch that enables JavaScript globally for all tabs
                 //% "Enable JavaScript"
                 text: qsTrId("settings_browser-la-enable_javascript")
@@ -267,6 +285,13 @@ Page {
                 }
             }
         }
+    }
+
+    ConfigurationValue {
+        id: doNotTrackConfig
+
+        key: "/apps/sailfish-browser/settings/do_not_track"
+        defaultValue: false
     }
 
     ConfigurationValue {
