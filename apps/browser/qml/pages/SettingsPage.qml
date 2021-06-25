@@ -27,7 +27,7 @@ Page {
     function removeProtocolTypeFromUri(uri) {
         if (uri.length === 0)
             return uri
-       return uri.replace(/(^\w+:|^)\/\//, '')
+        return uri.replace(/(^\w+:|^)\/\//, '')
     }
 
     SilicaFlickable {
@@ -137,13 +137,10 @@ Page {
                 }
             }
 
-            Button {
-                anchors.horizontalCenter: parent.horizontalCenter
-                //: Button for opening privacy settings page.
+            SectionHeader {
+                //: SectionHeader for Privacy settings
                 //% "Privacy"
                 text: qsTrId("settings_browser-bt-privacy")
-                enabled: AccessPolicy.browserEnabled
-                onClicked: pageStack.animatorPush(Qt.resolvedUrl("PrivacySettingsPage.qml"))
             }
 
             TextSwitch {
@@ -162,6 +159,24 @@ Page {
             }
 
             TextSwitch {
+                id: doNotTrack
+
+                checked: doNotTrackConfig.value
+
+                //: Tell sites that I do not want to be tracked.
+                //% "Do not track"
+                text: qsTrId("settings_browser-la-tracking")
+                //: Tell sites that I do not want to be tracked.
+                //% "Tell sites that I do not want to be tracked"
+                description: qsTrId("settings_browser-la-tracking_description")
+                // Margins adjusted to align with other items on the page
+                leftMargin: Theme.horizontalPageMargin + Theme.paddingLarge + _textSwitchIconCenter
+                _label.anchors.leftMargin: Theme.paddingMedium + _textSwitchIconCenter
+
+                onCheckedChanged: doNotTrackConfig.value = checked
+            }
+
+            TextSwitch {
                 //: Label for text switch that enables JavaScript globally for all tabs
                 //% "Enable JavaScript"
                 text: qsTrId("settings_browser-la-enable_javascript")
@@ -177,6 +192,30 @@ Page {
                 _label.anchors.leftMargin: Theme.paddingMedium + _textSwitchIconCenter
 
                 onCheckedChanged: WebEngineSettings.javascriptEnabled = checked;
+            }
+
+            BackgroundItem {
+                width: parent.width
+                contentHeight: Theme.itemSizeMedium
+                Row {
+                    width: parent.width - 2*Theme.horizontalPageMargin
+                    x: Theme.horizontalPageMargin
+                    spacing: Theme.paddingMedium
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    Icon {
+                        id: loginsIcon
+                        source: "image://theme/icon-m-person"
+                    }
+                    Label {
+                        width: parent.width - parent.spacing - permissionIcon.width
+                        //: The label for the button for accessing logins and passwords management
+                        //% "Logins and passwords"
+                        text: qsTrId("settings_browser-la-logins-passwords")
+                        anchors.verticalCenter: loginsIcon.verticalCenter
+                    }
+                }
+                onClicked: pageStack.push("LoginsPage.qml")
             }
 
             BackgroundItem {
@@ -212,24 +251,30 @@ Page {
                     anchors.verticalCenter: parent.verticalCenter
 
                     Icon {
-                        id: loginsIcon
-                        source: "image://theme/icon-m-keys"
+                        id: clearBrowsingDataIcon
+                        source: "image://theme/icon-m-delete"
                     }
                     Label {
-                        width: parent.width - parent.spacing - permissionIcon.width
-                        //: The label for the button for accessing password management
-                        //% "Passwords"
-                        text: qsTrId("settings_browser-la-passwords")
-                        anchors.verticalCenter: loginsIcon.verticalCenter
+                        width: parent.width - parent.spacing - clearBrowsingDataIcon.width
+                        //: The label for the button for accessing clear browsing data page
+                        //% "Clear browsing data"
+                        text: qsTrId("settings_browser-la-clear-browsing-data")
+                        anchors.verticalCenter: clearBrowsingDataIcon.verticalCenter
                     }
                 }
-                onClicked: pageStack.push("LoginsPage.qml")
+                onClicked: pageStack.push("PrivacySettingsPage.qml")
+            }
+
+            SectionHeader {
+                //: SectionHeader for Downloads settings
+                //% "Downloads"
+                text: qsTrId("settings_browser-la-downloads")
             }
 
             BrowserListItem {
                 //% "Save destination"
                 label: qsTrId("settings_browser-la-save_destination")
-                iconSource: "image://theme/icon-m-download"
+                iconSource: "image://theme/icon-m-downloads"
                 value: {
                     if (WebEngineSettings.useDownloadDir) {
                         //% "Download to %1"
@@ -267,6 +312,13 @@ Page {
                 }
             }
         }
+    }
+
+    ConfigurationValue {
+        id: doNotTrackConfig
+
+        key: "/apps/sailfish-browser/settings/do_not_track"
+        defaultValue: false
     }
 
     ConfigurationValue {
