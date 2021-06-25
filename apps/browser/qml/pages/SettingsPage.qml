@@ -204,6 +204,30 @@ Page {
                     anchors.verticalCenter: parent.verticalCenter
 
                     Icon {
+                        id: loginsIcon
+                        source: "image://theme/icon-m-person"
+                    }
+                    Label {
+                        width: parent.width - parent.spacing - permissionIcon.width
+                        //: The label for the button for accessing logins and passwords management
+                        //% "Logins and passwords"
+                        text: qsTrId("settings_browser-la-logins-passwords")
+                        anchors.verticalCenter: loginsIcon.verticalCenter
+                    }
+                }
+                onClicked: pageStack.push("LoginsPage.qml")
+            }
+
+            BackgroundItem {
+                width: parent.width
+                contentHeight: Theme.itemSizeMedium
+                Row {
+                    width: parent.width - 2*Theme.horizontalPageMargin
+                    x: Theme.horizontalPageMargin
+                    spacing: Theme.paddingMedium
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    Icon {
                         id: permissionIcon
                         source: "image://theme/icon-m-browser-permissions"
                     }
@@ -227,27 +251,18 @@ Page {
                     anchors.verticalCenter: parent.verticalCenter
 
                     Icon {
-                        id: loginsIcon
-                        source: "image://theme/icon-m-keys"
+                        id: clearBrowsingDataIcon
+                        source: "image://theme/icon-m-delete"
                     }
                     Label {
-                        width: parent.width - parent.spacing - permissionIcon.width
-                        //: The label for the button for accessing password management
-                        //% "Passwords"
-                        text: qsTrId("settings_browser-la-passwords")
-                        anchors.verticalCenter: loginsIcon.verticalCenter
+                        width: parent.width - parent.spacing - clearBrowsingDataIcon.width
+                        //: The label for the button for accessing clear browsing data page
+                        //% "Clear browsing data"
+                        text: qsTrId("settings_browser-la-clear-browsing-data")
+                        anchors.verticalCenter: clearBrowsingDataIcon.verticalCenter
                     }
                 }
-                onClicked: pageStack.push("LoginsPage.qml")
-            }
-
-            Button {
-                anchors.horizontalCenter: parent.horizontalCenter
-                //: Button for opening privacy settings page.
-                //% "Privacy"
-                text: qsTrId("settings_browser-bt-privacy")
-                enabled: AccessPolicy.browserEnabled
-                onClicked: pageStack.animatorPush(Qt.resolvedUrl("PrivacySettingsPage.qml"))
+                onClicked: pageStack.push("PrivacySettingsPage.qml")
             }
 
             SectionHeader {
@@ -259,7 +274,7 @@ Page {
             BrowserListItem {
                 //% "Save destination"
                 label: qsTrId("settings_browser-la-save_destination")
-                iconSource: "image://theme/icon-m-download"
+                iconSource: "image://theme/icon-m-downloads"
                 value: {
                     if (WebEngineSettings.useDownloadDir) {
                         //% "Download to %1"
