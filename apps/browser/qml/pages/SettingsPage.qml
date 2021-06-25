@@ -27,7 +27,7 @@ Page {
     function removeProtocolTypeFromUri(uri) {
         if (uri.length === 0)
             return uri
-       return uri.replace(/(^\w+:|^)\/\//, '')
+        return uri.replace(/(^\w+:|^)\/\//, '')
     }
 
     SilicaFlickable {
@@ -137,13 +137,10 @@ Page {
                 }
             }
 
-            Button {
-                anchors.horizontalCenter: parent.horizontalCenter
-                //: Button for opening privacy settings page.
+            SectionHeader {
+                //: SectionHeader for Privacy settings
                 //% "Privacy"
                 text: qsTrId("settings_browser-bt-privacy")
-                enabled: AccessPolicy.browserEnabled
-                onClicked: pageStack.animatorPush(Qt.resolvedUrl("PrivacySettingsPage.qml"))
             }
 
             TextSwitch {
@@ -159,6 +156,24 @@ Page {
                 _label.anchors.leftMargin: Theme.paddingMedium + _textSwitchIconCenter
 
                 onCheckedChanged: closeAllTabsConfig.value = checked
+            }
+
+            TextSwitch {
+                id: doNotTrack
+
+                checked: doNotTrackConfig.value
+
+                //: Tell sites that I do not want to be tracked.
+                //% "Do not track"
+                text: qsTrId("settings_browser-la-tracking")
+                //: Tell sites that I do not want to be tracked.
+                //% "Tell sites that I do not want to be tracked"
+                description: qsTrId("settings_browser-la-tracking_description")
+                // Margins adjusted to align with other items on the page
+                leftMargin: Theme.horizontalPageMargin + Theme.paddingLarge + _textSwitchIconCenter
+                _label.anchors.leftMargin: Theme.paddingMedium + _textSwitchIconCenter
+
+                onCheckedChanged: doNotTrackConfig.value = checked
             }
 
             TextSwitch {
@@ -226,6 +241,21 @@ Page {
                 onClicked: pageStack.push("LoginsPage.qml")
             }
 
+            Button {
+                anchors.horizontalCenter: parent.horizontalCenter
+                //: Button for opening privacy settings page.
+                //% "Privacy"
+                text: qsTrId("settings_browser-bt-privacy")
+                enabled: AccessPolicy.browserEnabled
+                onClicked: pageStack.animatorPush(Qt.resolvedUrl("PrivacySettingsPage.qml"))
+            }
+
+            SectionHeader {
+                //: SectionHeader for Downloads settings
+                //% "Downloads"
+                text: qsTrId("settings_browser-la-downloads")
+            }
+
             BrowserListItem {
                 //% "Save destination"
                 label: qsTrId("settings_browser-la-save_destination")
@@ -267,6 +297,13 @@ Page {
                 }
             }
         }
+    }
+
+    ConfigurationValue {
+        id: doNotTrackConfig
+
+        key: "/apps/sailfish-browser/settings/do_not_track"
+        defaultValue: false
     }
 
     ConfigurationValue {
